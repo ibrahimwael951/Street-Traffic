@@ -1,17 +1,20 @@
 import React from "react";
-import { cn } from "../lib/utils";
+import { cn } from "../../lib/utils";
 import { motion } from "framer-motion";
-import { FadeUp, ViewPort } from "../Animation/Animate";
+import { FadeUp, ViewPort } from "../../Animation/Animate";
 
 const Button = ({
   className,
+  onClick,
   children,
 }: {
   children: React.ReactNode;
   className?: string;
+  onClick?: () => void;
 }) => {
   return (
     <motion.button
+      onClick={onClick}
       {...FadeUp}
       {...ViewPort}
       className={cn(

@@ -1,10 +1,12 @@
 import { motion } from "framer-motion";
-import { Animate, FadeUp } from "./Animation/Animate";
-import { BackgroundBeamsWithCollision } from "./Components/ui/background-beams-with-collision";
-import Button from "./Components/Button";
+import { Animate, FadeDown, FadeUp } from "../Animation/Animate";
+import { BackgroundBeamsWithCollision } from "../Components/ui/background-beams-with-collision";
+import Button from "../Components/ui/Button";
+import { Link } from "react-router-dom";
+
 function App() {
   return (
-    <section>
+    <motion.section {...FadeDown} {...Animate}>
       <BackgroundBeamsWithCollision>
         <motion.div
           {...FadeUp}
@@ -25,11 +27,13 @@ function App() {
             and keep the traffic flowing.
           </p>
           <div>
-            <Button>Play ?</Button>
+            <Link to="/game">
+              <Button >Play ?</Button>
+            </Link>
           </div>
         </motion.div>
       </BackgroundBeamsWithCollision>
-    </section>
+    </motion.section>
   );
 }
 

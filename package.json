@@ -15,8 +15,10 @@
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.12",
     "motion": "^12.23.12",
+    "phaser": "^3.90.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
