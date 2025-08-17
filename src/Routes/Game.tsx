@@ -1,25 +1,48 @@
 import { motion } from "framer-motion";
 
 import { useEffect } from "react";
-import { launchGame } from "../Components/ui/Game";
+import { launchGame } from "../Components/Game";
 import { Animate, FadeUp } from "../Animation/Animate";
+import { Link } from "react-router-dom";
+const MotionLink = motion(Link);
+
 export default function Game() {
+  const Animation = {
+    whileHover: { scale: 1.02 },
+    whileTap: { scale: 0.92 },
+  };
   useEffect(() => {
-    // Start the game
     const gameInstance = launchGame();
 
-    // Cleanup when leaving the page
     return () => {
       if (gameInstance && gameInstance.destroy) {
-        gameInstance.destroy(true);  
+        gameInstance.destroy(true);
       }
     };
   }, []);
   return (
-    <motion.section {...FadeUp} {...Animate}>
-      <div className="  flex justify-center items-center">
+    <section className="flex flex-col justify-center items-center gap-5 min-h-screen ">
+      <div className=" flex justify-center items-center">
         <div id="game-container"></div>
       </div>
-    </motion.section>
+      <motion.div {...FadeUp} {...Animate} className="space-x-5">
+        <motion.button
+         {...Animation}
+
+          onClick={() => window.location.reload()}
+          className=" p-5 rounded-2xl bg-purple-600 border border-purple-600 hover:bg-transparent text-white hover:text-purple-600 duration-150"
+        >
+          Restart ?
+        </motion.button>
+        <MotionLink
+         {...Animation}
+          to="/"
+          onClick={() => window.location.reload()}
+          className=" p-5 rounded-2xl bg-purple-600 border border-purple-600 hover:bg-transparent text-white hover:text-purple-600 duration-150"
+        >
+          Go back to home
+        </MotionLink>
+      </motion.div>
+    </section>
   );
 }

@@ -21,5 +21,7 @@ p{
 }
 
  
- 
+ body{
+  @apply bg-black
+ }
  
