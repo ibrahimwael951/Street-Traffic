@@ -3,14 +3,8 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { launchGame } from "../Components/Game";
 import { Animate, FadeUp } from "../Animation/Animate";
-import { Link } from "react-router-dom";
-const MotionLink = motion(Link);
 
 export default function Game() {
-  const Animation = {
-    whileHover: { scale: 1.02 },
-    whileTap: { scale: 0.92 },
-  };
   useEffect(() => {
     const gameInstance = launchGame();
 
@@ -26,22 +20,9 @@ export default function Game() {
         <div id="game-container"></div>
       </div>
       <motion.div {...FadeUp} {...Animate} className="space-x-5">
-        <motion.button
-         {...Animation}
-
-          onClick={() => window.location.reload()}
-          className=" p-5 rounded-2xl bg-purple-600 border border-purple-600 hover:bg-transparent text-white hover:text-purple-600 duration-150"
-        >
-          Restart ?
-        </motion.button>
-        <MotionLink
-         {...Animation}
-          to="/"
-          onClick={() => window.location.reload()}
-          className=" p-5 rounded-2xl bg-purple-600 border border-purple-600 hover:bg-transparent text-white hover:text-purple-600 duration-150"
-        >
-          Go back to home
-        </MotionLink>
+        <p className=" !text-white text-3xl my-10  ">
+          If you want to restart the game , reload the page
+        </p>
       </motion.div>
     </section>
   );
