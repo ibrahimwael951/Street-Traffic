@@ -68,17 +68,22 @@ export default class TrafficGame extends Phaser.Scene {
       "traffic4",
       "traffic-fallback",
     ];
+
     for (let i = 0; i < 3; i++) {
       const road = this.add.image(400, 300 - i * 600, "road");
       road.setDisplaySize(800, 600);
       this.roads.push(road);
     }
+
     this.player = this.physics.add.sprite(400, 500, "player");
     this.player.setCollideWorldBounds(true);
     this.player.setDrag(600, 600);
     this.player.setDepth(2);
+
     this.trafficCars = this.physics.add.group();
-    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.cursors = this.input!.keyboard!.createCursorKeys();
+
     this.physics.add.collider(
       this.player,
       this.trafficCars,
@@ -86,6 +91,7 @@ export default class TrafficGame extends Phaser.Scene {
       undefined,
       this
     );
+
     this.scoreText = this.add
       .text(10, 10, "Score: 0", {
         fontSize: "24px",
@@ -94,6 +100,7 @@ export default class TrafficGame extends Phaser.Scene {
         padding: { x: 10, y: 5 },
       })
       .setDepth(5);
+
     this.speedText = this.add
       .text(10, 50, "Speed: 0 km/h", {
         fontSize: "20px",
@@ -102,6 +109,7 @@ export default class TrafficGame extends Phaser.Scene {
         padding: { x: 10, y: 5 },
       })
       .setDepth(5);
+
     this.policeText = this.add
       .text(10, 90, "", {
         fontSize: "18px",
@@ -111,6 +119,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setDepth(6)
       .setVisible(false);
+
     this.add
       .text(400, 560, "Use Arrow Keys: ← → Turn, ↑ Accelerate, ↓ Brake", {
         fontSize: "16px",
@@ -120,6 +129,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(5);
+
     this.add
       .rectangle(400, 300, 800, 600, 0xff0000, 0.18)
       .setVisible(false)
@@ -130,6 +140,7 @@ export default class TrafficGame extends Phaser.Scene {
       .setVisible(false)
       .setDepth(4)
       .setName("policeBlue");
+
     this.spawnTimer = 0;
     this.policeLightTimer = 0;
     this.lowSpeedTimer = 0;
@@ -139,6 +150,7 @@ export default class TrafficGame extends Phaser.Scene {
 
   update(_time: number, delta: number): void {
     if (!this.gameRunning) return;
+
     if (this.cursors.up?.isDown) {
       this.currentSpeed = Math.min(
         this.currentSpeed + this.acceleration,
@@ -162,8 +174,10 @@ export default class TrafficGame extends Phaser.Scene {
         );
       }
     }
+
     this.kmh = Math.floor((Math.abs(this.currentSpeed) / this.maxSpeed) * 200);
     this.speedText.setText("Speed: " + this.kmh + " km/h");
+
     const roadSpeed = this.currentSpeed * 1.5;
     this.roads.forEach((road) => {
       road.y += roadSpeed * (delta / 1000) * 60;
@@ -171,6 +185,7 @@ export default class TrafficGame extends Phaser.Scene {
         road.y -= 3 * 600;
       }
     });
+
     const absSpeed = Math.abs(this.currentSpeed);
     const turnForce =
       absSpeed === 50
@@ -187,20 +202,24 @@ export default class TrafficGame extends Phaser.Scene {
       this.player.setRotation(0);
     }
     this.player.setVelocityY(0);
+
     if (this.currentSpeed > 0) {
       this.score += Math.floor((this.currentSpeed / 50) * (delta / 16.67));
     }
     this.scoreText.setText("Score: " + this.score);
+
     this.trafficCars.children.entries.forEach((car) => {
       const sprite = car as Phaser.GameObjects.Sprite & { y?: number };
       if (sprite.y && sprite.y > 700) sprite.destroy();
     });
+
     this.spawnDelay = Math.max(400, 800 - this.score / 100);
     this.spawnTimer += delta;
     if (this.spawnTimer >= this.spawnDelay) {
       this.spawnTraffic();
       this.spawnTimer = 0;
     }
+
     if (this.kmh >= 150) {
       if (!this.policeActive) {
         this.policeActive = true;
@@ -217,6 +236,7 @@ export default class TrafficGame extends Phaser.Scene {
         this.policeText.setVisible(false);
       }
     }
+
     if (this.policeActive) {
       if (this.kmh < 50) {
         this.lowSpeedTimer += delta;
@@ -274,15 +294,18 @@ export default class TrafficGame extends Phaser.Scene {
       carKey
     ) as Phaser.Physics.Arcade.Sprite;
     trafficCar.setDepth(1);
+
     const scaledPlayerSpeed = Math.max(this.currentSpeed, this.minSpeed);
     const baseSpeed =
       this.baseTrafficSpeed + scaledPlayerSpeed * 0.8 + this.score / 100;
     const speedVariance = Phaser.Math.Between(-50, 100);
     const carSpeed = Math.max(60, Math.floor(baseSpeed + speedVariance));
+
     trafficCar.setVelocityY(carSpeed);
     trafficCar.setCollideWorldBounds(false);
     trafficCar.setRotation(Phaser.Math.FloatBetween(-0.06, 0.06));
     trafficCar.setImmovable(true);
+
     if (
       trafficCar.body &&
       (trafficCar.body as Phaser.Physics.Arcade.Body).setSize
@@ -302,9 +325,12 @@ export default class TrafficGame extends Phaser.Scene {
     if (!this.gameRunning) return;
     this.gameRunning = false;
     this.physics.pause();
+
     this.policeText.setVisible(false);
+
     this.add.rectangle(400, 300, 800, 600, 0x000000, 0.8).setDepth(10);
     this.add.image(400, 180, "angry-face").setScale(1.6).setDepth(11);
+
     const angryComments = [
       "Terrible driving!",
       "You call that driving?!",
@@ -317,6 +343,7 @@ export default class TrafficGame extends Phaser.Scene {
     ];
     const randomComment =
       angryComments[Math.floor(Math.random() * angryComments.length)];
+
     this.add
       .text(400, 260, "GAME OVER!", {
         fontSize: "48px",
@@ -324,6 +351,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(11);
+
     this.add
       .text(400, 320, randomComment, {
         fontSize: "24px",
@@ -331,6 +359,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(11);
+
     this.add
       .text(400, 370, `Final Score: ${this.score}`, {
         fontSize: "28px",
@@ -338,6 +367,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(11);
+
     this.cameras.main?.shake(800, 0.02);
   };
 
@@ -345,9 +375,12 @@ export default class TrafficGame extends Phaser.Scene {
     if (!this.gameRunning) return;
     this.gameRunning = false;
     this.physics.pause();
+
     this.policeText.setVisible(false);
+
     this.add.rectangle(400, 300, 800, 600, 0x000000, 0.85).setDepth(20);
     this.add.image(400, 200, "police").setScale(1.6).setDepth(21);
+
     this.add
       .text(400, 320, "POLICE CAUGHT YOU!", {
         fontSize: "48px",
@@ -355,6 +388,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(21);
+
     this.add
       .text(400, 380, `Final Score: ${this.score}`, {
         fontSize: "28px",
@@ -362,6 +396,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(21);
+
     this.add
       .text(
         400,
@@ -374,6 +409,7 @@ export default class TrafficGame extends Phaser.Scene {
       )
       .setOrigin(0.5)
       .setDepth(21);
+
     this.cameras.main?.shake(1000, 0.03);
   }
 }
@@ -398,11 +434,14 @@ export function launchGame(): Phaser.Game {
   if (window.__PHASER_GAME__) {
     try {
       window.__PHASER_GAME__.destroy(true);
-    } catch (e) {}
+    } catch (e) {
+      // ignore
+    }
     const container = document.getElementById("game-container");
     if (container) container.innerHTML = "";
     window.__PHASER_GAME__ = null;
   }
+
   const game = new Phaser.Game(config);
   window.__PHASER_GAME__ = game;
   return game;
