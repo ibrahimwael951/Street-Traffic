@@ -137,7 +137,7 @@ export default class TrafficGame extends Phaser.Scene {
     this.gameRunning = true;
   }
 
-  update(time: number, delta: number): void {
+  update(_time: number, delta: number): void {
     if (!this.gameRunning) return;
     if (this.cursors.up?.isDown) {
       this.currentSpeed = Math.min(
@@ -295,7 +295,10 @@ export default class TrafficGame extends Phaser.Scene {
     }
   }
 
-  private handleCollision = (playerObj: any, trafficCarObj: any): void => {
+  private handleCollision = (
+    _playerObj: any,
+    _trafficCarObj: any
+  ): void => {
     if (!this.gameRunning) return;
     this.gameRunning = false;
     this.physics.pause();
@@ -335,7 +338,7 @@ export default class TrafficGame extends Phaser.Scene {
       })
       .setOrigin(0.5)
       .setDepth(11);
-    this.cameras.main.shake(800, 0.02);
+    this.cameras.main?.shake(800, 0.02);
   };
 
   private policeCatch(): void {
@@ -371,7 +374,7 @@ export default class TrafficGame extends Phaser.Scene {
       )
       .setOrigin(0.5)
       .setDepth(21);
-    this.cameras.main.shake(1000, 0.03);
+    this.cameras.main?.shake(1000, 0.03);
   }
 }
 
