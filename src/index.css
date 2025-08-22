@@ -25,3 +25,6 @@ p{
   @apply bg-black
  }
  
+ .Link{
+  @apply border-b border-purple-700 text-purple-700 mx-2 hover:text-purple-500 hover:border-purple-500 
+ }

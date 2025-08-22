@@ -3,6 +3,7 @@ import { Animate, FadeDown, FadeUp } from "../Animation/Animate";
 import { BackgroundBeamsWithCollision } from "../Components/ui/background-beams-with-collision";
 import Button from "../Components/ui/Button";
 import { Link } from "react-router-dom";
+import Footer from "../Components/Footer";
 
 function App() {
   return (
@@ -28,11 +29,12 @@ function App() {
           </p>
           <div>
             <Link to="/game">
-              <Button >Play ?</Button>
+              <Button>Play ?</Button>
             </Link>
           </div>
         </motion.div>
       </BackgroundBeamsWithCollision>
+      <Footer />
     </motion.section>
   );
 }

@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 
 import { useEffect } from "react";
-import { launchGame } from "../Components/Game";
+import { launchGame } from "../Game/Game";
 import { Animate, FadeUp } from "../Animation/Animate";
 
 export default function Game() {
@@ -20,9 +20,21 @@ export default function Game() {
         <div id="game-container"></div>
       </div>
       <motion.div {...FadeUp} {...Animate} className="space-x-5">
-        <p className=" !text-white text-3xl my-10  ">
-          If you want to restart the game , reload the page
-        </p>
+        <motion.button
+          {...Animation}
+          onClick={() => window.location.reload()}
+          className=" p-5 rounded-2xl bg-purple-600 border border-purple-600 hover:bg-transparent text-white hover:text-purple-600 duration-150"
+        >
+          Restart ?
+        </motion.button>
+        <a
+          {...Animation}
+          href="/"
+          onClick={() => window.location.reload()}
+          className=" p-5 rounded-2xl bg-purple-600 border border-purple-600 hover:bg-transparent text-white hover:text-purple-600 duration-150"
+        >
+          Go back to home
+        </a>
       </motion.div>
     </section>
   );
